@@ -1,0 +1,21 @@
+{
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.formatOnSave": false
+  },
+  "[typescript]": {
+    "editor.formatOnSave": false
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "deno.path": "/home/rampage/.deno/bin/deno",
+  "deno.enable": true, // enables extension
+  "deno.lint": true, // inline deno lint diagnostics, requires `deno.unstable`
+  "deno.unstable": true,
+  "deno.suggest.imports.hosts": {
+    "https://cdn.esm.sh": false,
+    "https://deno.land": true
+  } // also provides unstable type declarations in VS Code
+}
