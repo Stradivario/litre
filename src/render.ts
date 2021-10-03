@@ -1,7 +1,11 @@
+// deno-lint-ignore-file no-explicit-any
+/// <reference lib="dom" />
+
 import { concat } from "https://deno.land/std@0.107.0/bytes/mod.ts";
 import { Buffer } from "https://deno.land/std@0.107.0/io/mod.ts";
 import { join } from "https://deno.land/std@0.107.0/path/mod.ts";
 
+import { Ocean } from "https://cdn.spooky.click/ocean/1.3.0/ocean.js";
 import { RenderOptions } from "./types.ts";
 
 const isDev = Deno.env.get("mode") === "dev";
@@ -9,6 +13,7 @@ const serverStart = +new Date();
 
 const defaultBufferSize = 8 * 1024;
 const defaultChunkSize = 8 * 1024;
+
 
 const encodeStream = (readable: ReadableStream) =>
   new ReadableStream({
@@ -66,6 +71,7 @@ export default async (
   {
     root,
     lang,
+    title,
     bufferSize,
     chunkSize,
     headScripts,
@@ -75,30 +81,43 @@ export default async (
   chunkSize = chunkSize ?? defaultChunkSize;
 
   const ts = isDev ? +new Date() : serverStart;
+
   const app = await import(join(root, `app.js?ts=${ts}`));
 
+  const { html } = new (Ocean as any)({
+    document,
+  });
+  
   const body = new ReadableStream({
     start(controller) {
       (async () => {
-        controller.enqueue(await app.default());
+        if (!customElements.get('app-root')) {
+          customElements.define('app-root', app.default);
+        }
+        const webPageIterator = html`
+          <!DOCTYPE html>
+          <html lang="${lang}">
+            <head>
+              <title>${title ?? 'My app'}</title>
+              <script type="module" defer>
+                ${headScripts?.join(" ") || ""}
+              </script>
+            </head>
+            <body>
+              <app-root></app-root>
+            </body>
+            <script type="module" defer>
+              ${tailScripts?.join(" ") || ""}
+            </script>
+          </html>
+        `;
+        for await (const chunk of webPageIterator) {
+          controller.enqueue(chunk);
+        }
         controller.close();
       })();
     },
   });
-
-  const head = () => `
-  <!DOCTYPE html><html lang="${lang}"><head>
-  <script type="module" defer>
-    ${headScripts?.join(" ") || ""}
-  </script>
-  </head><body>
-  `;
-
-  const tail = () => `</body>
-  <script type="module" defer>
-    ${tailScripts?.join(" ") || ""}
-  </script>
-  </html>`;
 
   const encodedStream = encodeStream(body);
   const bodyReader = encodedStream.getReader();
@@ -109,7 +128,7 @@ export default async (
     if (read.done) {
       break;
     }
-    buffer.writeSync(read.value);
+    await buffer.write(read.value);
   }
 
   return encodeStream(
@@ -120,10 +139,8 @@ export default async (
       ) {
         (async () => {
           try {
-            await push(head());
             await push(buffer.bytes({ copy: false }));
             await pushBody(bodyReader, controller, chunkSize as never);
-            await push(tail());
           } catch (e) {
             console.error("readable stream error", e);
             await push("Error");

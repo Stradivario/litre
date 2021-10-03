@@ -16,6 +16,7 @@
   "deno.unstable": true,
   "deno.suggest.imports.hosts": {
     "https://cdn.esm.sh": false,
-    "https://deno.land": true
+    "https://deno.land": true,
+    "https://cdn.spooky.click": true
   } // also provides unstable type declarations in VS Code
 }

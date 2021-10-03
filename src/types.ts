@@ -6,7 +6,7 @@ export type StartOptions = {
   importmap: string;
   lang?: string;
   folder?: string;
-  serverPort?: number;
+  port?: number;
 };
 
 export type TransformOptions = {
@@ -20,6 +20,7 @@ export type RenderOptions = {
   importmap: ImportMap;
   request: { url: URL };
   lang: string;
+  title?: string,
   headScripts?: string[];
   tailScripts?: string[];
   // Number of bytes of the response to buffer before starting to stream. This
