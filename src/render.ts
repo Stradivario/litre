@@ -100,14 +100,14 @@ export default async (
             <head>
               <title>${title ?? 'My app'}</title>
               <script type="module" defer>
-                ${headScripts?.join(" ") || ""}
+                ${headScripts?.join(" ") ?? ""}
               </script>
             </head>
             <body>
               <app-root></app-root>
             </body>
             <script type="module" defer>
-              ${tailScripts?.join(" ") || ""}
+              ${tailScripts?.join(" ") ?? ""}
             </script>
           </html>
         `;

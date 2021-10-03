@@ -7,15 +7,22 @@
 </div>
 
 
-**Litre** is a web framework that leans hard into your browser's native
-features.
+**Litre** is a web framework intended to work with LitHTML and SSR
 
 Embrace the future of **ES Modules**, **Import Maps**, and **Web
 Streams**. 
 
+### Starting Litre server
 
+```typescript
+import litre from 'https://raw.githubusercontent.com/Stradivario/litre/master/src/mod.ts';
 
-### Starting Deno server
+litre({
+  importmap: await Deno.readTextFile('importmap.json'),
+  folder: 'app',
+  port: 4200,
+});
+```
 
 ```bash
 make dev
