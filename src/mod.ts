@@ -23,7 +23,6 @@ const router = new Router();
 
 const start = ({
   importmap: importMapSource,
-  lang = "en",
   folder,
   port: serverPort,
 }: StartOptions) => {
@@ -87,8 +86,7 @@ const start = ({
       context.response.body = await render({
         root,
         request: context.request,
-        importmap,
-        lang,
+        importmap
       });
     } catch (e) {
       console.log(e);

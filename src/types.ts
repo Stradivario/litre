@@ -19,10 +19,6 @@ export type RenderOptions = {
   root: string;
   importmap: ImportMap;
   request: { url: URL };
-  lang: string;
-  title?: string,
-  headScripts?: string[];
-  tailScripts?: string[];
   // Number of bytes of the response to buffer before starting to stream. This
   // allows 500 statuses to be raised, provided the error happens while the
   // response is buffering, rather than streaming:

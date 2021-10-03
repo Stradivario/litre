@@ -14,6 +14,19 @@ const serverStart = +new Date();
 const defaultBufferSize = 8 * 1024;
 const defaultChunkSize = 8 * 1024;
 
+interface CustomElementLitre extends CustomElementConstructor {
+  is(): string;
+}
+
+interface RenderConfigLitre {
+  root: CustomElementLitre;
+  page: AsyncIterable<string>;
+}
+
+declare global {
+  var html: (strings: TemplateStringsArray, ...values: unknown[]) => AsyncIterator<string, void, undefined>;
+  interface Window { html: (strings: TemplateStringsArray, ...values: unknown[]) => AsyncIterator<string, void, undefined>; }
+}
 
 const encodeStream = (readable: ReadableStream) =>
   new ReadableStream({
@@ -68,49 +81,32 @@ async function pushBody(
 }
 
 export default async (
-  {
-    root,
-    lang,
-    title,
-    bufferSize,
-    chunkSize,
-    headScripts,
-    tailScripts,
-  }: RenderOptions = {} as RenderOptions
+  { root, bufferSize, chunkSize }: RenderOptions = {} as RenderOptions
 ) => {
   chunkSize = chunkSize ?? defaultChunkSize;
 
   const ts = isDev ? +new Date() : serverStart;
 
-  const app = await import(join(root, `app.js?ts=${ts}`));
-
-  const { html } = new (Ocean as any)({
-    document,
-  });
   
+  const ocean = new Ocean({
+    document,
+  } as any);
+
+  self.html = ocean.html as any;
+
+  const app = (await import(join(root, `app.js?ts=${ts}`))) as {
+    default: RenderConfigLitre;
+  };
+
+
   const body = new ReadableStream({
     start(controller) {
       (async () => {
-        if (!customElements.get('app-root')) {
-          customElements.define('app-root', app.default);
+     
+        if (!customElements.get(app.default.root.is())) {
+          customElements.define(app.default.root.is(), app.default.root);
         }
-        const webPageIterator = html`
-          <!DOCTYPE html>
-          <html lang="${lang}">
-            <head>
-              <title>${title ?? 'My app'}</title>
-              <script type="module" defer>
-                ${headScripts?.join(" ") ?? ""}
-              </script>
-            </head>
-            <body>
-              <app-root></app-root>
-            </body>
-            <script type="module" defer>
-              ${tailScripts?.join(" ") ?? ""}
-            </script>
-          </html>
-        `;
+        const webPageIterator = app.default.page;
         for await (const chunk of webPageIterator) {
           controller.enqueue(chunk);
         }
