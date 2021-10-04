@@ -12,8 +12,8 @@ class AppRoot extends LitElement {
 }
 
 export default {
-  root: AppRoot,
-  page: html`
+  root: () => AppRoot,
+  page: () => html`
     <!DOCTYPE html>
     <html lang="en">
       <head>

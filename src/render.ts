@@ -19,8 +19,8 @@ interface CustomElementLitre extends CustomElementConstructor {
 }
 
 interface RenderConfigLitre {
-  root: CustomElementLitre;
-  page: AsyncIterable<string>;
+  root: () => CustomElementLitre;
+  page: () => AsyncIterable<string>;
 }
 
 declare global {
@@ -102,11 +102,10 @@ export default async (
   const body = new ReadableStream({
     start(controller) {
       (async () => {
-     
-        if (!customElements.get(app.default.root.is())) {
-          customElements.define(app.default.root.is(), app.default.root);
+        if (!customElements.get(app.default.root().is())) {
+          customElements.define(app.default.root().is(), app.default.root());
         }
-        const webPageIterator = app.default.page;
+        const webPageIterator = app.default.page();
         for await (const chunk of webPageIterator) {
           controller.enqueue(chunk);
         }
