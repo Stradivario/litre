@@ -1,6 +1,6 @@
 <div align="center">
   <br />
-  <img src="https://i.ibb.co/bJtvskr/59613b55e77049a384c0763bacc45bc4-1.png" height="250" />
+  <img src="https://i.ibb.co/vJgqKZG/Litre-3.png" height="250" />
   <br /><br />
   <strong>Deno + LitHTML: No build, no bundle, all streaming</strong>
   <br /><br />
