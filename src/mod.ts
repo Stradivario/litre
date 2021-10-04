@@ -8,8 +8,8 @@ import {
   send,
 } from "https://deno.land/x/oak@v9.0.0/mod.ts";
 
-import render from "./render.ts";
-import transform from "./transform.ts";
+import { render } from "./render.ts";
+import { transform } from "./helpers/transform.ts";
 import { ImportMap, StartOptions } from "./types.ts";
 
 import "./shims/shim.js?global";
@@ -20,21 +20,20 @@ Object.assign(window, root);
 
 const app = new Application();
 const router = new Router();
+const serverStart = +new Date();
+const isDev = Deno.env.get("mode") === "dev";
 
 const start = ({
   importmap: importMapSource,
-  lang = "en",
   folder,
   port: serverPort,
 }: StartOptions) => {
-
   const memory = new LRU<string>(500);
 
   const importmap: ImportMap = JSON.parse(importMapSource);
   const appFolder = folder || "app";
   const port = serverPort || parseInt(Deno.env.get("port") || "", 10) || 3000;
   const root = Deno.env.get("url") || `http://localhost:${port}`;
-  const isDev = Deno.env.get("mode") === "dev";
 
   app.use(async (context, next) => {
     const { pathname } = context.request.url;
@@ -71,7 +70,14 @@ const start = ({
       const source = await Deno.readTextFile(
         join(Deno.cwd(), appFolder, ...file.split("/"))
       );
-      const code = await transform({ source, importmap, root });
+
+      const code = await transform({
+        source,
+        importmap,
+        root,
+        timestamp: serverStart,
+        minify: !isDev,
+      });
       if (!isDev) {
         memory.set(pathname, code);
       }
@@ -84,11 +90,13 @@ const start = ({
 
   router.get("/(.*)", async (context) => {
     try {
+      const timestamp = isDev ? +new Date() : serverStart;
+
       context.response.body = await render({
         root,
-        request: context.request,
+        context,
         importmap,
-        lang,
+        timestamp
       });
     } catch (e) {
       console.log(e);
@@ -114,3 +122,5 @@ const start = ({
 export default start;
 
 export { app, router };
+
+export * from "./types.ts";
