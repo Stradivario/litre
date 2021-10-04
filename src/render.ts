@@ -37,7 +37,7 @@ export const render = async (
       (async () => {
         const webPageIterator = app.default.page({
           context,
-          render: ocean.html,
+          html: ocean.html as never,
         });
         for await (const chunk of webPageIterator) {
           controller.enqueue(chunk);

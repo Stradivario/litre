@@ -1,7 +1,7 @@
 <div align="center">
   <br />
-  <img src="https://lit.dev/images/logo.svg" height="250" />
-  <h1>Litre</h1>
+  <img src="https://i.ibb.co/bJtvskr/59613b55e77049a384c0763bacc45bc4-1.png" height="250" />
+  <br /><br />
   <strong>Deno + LitHTML: No build, no bundle, all streaming</strong>
   <br /><br />
 </div>
@@ -28,7 +28,7 @@ litre({
 make dev
 ```
 
-### Example
+### HTMLElement
 ```typescript
 
 class AppRoot extends HTMLElement {
@@ -81,10 +81,11 @@ import { RenderConfigLitre } from 'https://raw.githubusercontent.com/Stradivario
 export class AppRoot extends LitElement {}
 
 export default {
-  page: (ctx) => ctx.render`
+  page: (opts) => opts.html`
     <!DOCTYPE html>
     <html lang="en">
       <head>
+        <meta charset="UTF-8">
         <title>My app</title>
       </head>
       <body>

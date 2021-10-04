@@ -91,7 +91,9 @@ const start = ({
   router.get("/(.*)", async (context) => {
     try {
       const timestamp = isDev ? +new Date() : serverStart;
-
+      const headers = new Headers();
+      headers.set('Content-Type', 'text/html; charset=UTF-8')
+      context.response.headers = headers;
       context.response.body = await render({
         root,
         context,

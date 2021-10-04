@@ -1,5 +1,5 @@
 export const encodeStream = (readable: ReadableStream) =>
-  new ReadableStream({
+  new ReadableStream<Uint8Array>({
     start(controller) {
       return (async () => {
         const encoder = new TextEncoder();

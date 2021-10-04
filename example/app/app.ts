@@ -15,10 +15,11 @@ import { RenderConfigLitre } from 'https://raw.githubusercontent.com/Stradivario
 export class AppRoot extends LitElement {}
 
 export default {
-  page: (ctx) => ctx.render`
+  page: (opts) => opts.html`
     <!DOCTYPE html>
     <html lang="en">
       <head>
+        <meta charset="UTF-8">
         <title>My app</title>
       </head>
       <body>

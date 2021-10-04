@@ -45,11 +45,11 @@ export type Cache = Map<unknown, unknown>;
 export interface RenderConfigLitre {
   page: (options: {
     context: RouterContext<RouteParams, Record<string, any>>;
-    render(
+    html(
       strings: TemplateStringsArray,
       ...values: unknown[]
     ): AsyncIterator<string, void, undefined>;
-  }) => AsyncIterator<string, void, undefined>;
+  }) => AsyncIterable<string> & AsyncIterator<string, void, undefined>;
 }
 
 export const defaultBufferSize = 8 * 1024;
