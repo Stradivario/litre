@@ -1,26 +1,26 @@
-import { html as lhtml } from "https://cdn.esm.sh/v53/lit-html@2.0.0";
+import {
+  html,
+  Component,
+  LitElement,
+} from "https://cdn.esm.sh/v53/@rxdi/lit-html@0.7.127";
 
-import { LitElement } from "https://cdn.esm.sh/v53/lit-element@3.0.0";
-
-class AppRoot extends LitElement {
-  public static is() {
-    return "app-root";
-  }
-  render() {
-    return lhtml`Hello from SSR Webcomponents using Deno!`;
-  }
-}
+@Component({
+  selector: "app-root",
+  template(this) {
+    return html`Hello from SSR Webcomponents using Deno!`;
+  },
+})
+export class AppRoot extends LitElement {}
 
 export default {
-  root: () => AppRoot,
-  page: () => html`
+  page: ({ render }) => render`
     <!DOCTYPE html>
     <html lang="en">
       <head>
-        <title>"My app"</title>
+        <title>My app</title>
       </head>
       <body>
-        <app-root></app-root>
+      <app-root></app-root>
       </body>
     </html>
   `,
