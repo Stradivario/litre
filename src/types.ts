@@ -1,5 +1,7 @@
 /// <reference lib="dom" />
 // deno-lint-ignore-file no-explicit-any
+// deno-lint-ignore no-unused-vars
+import { Ocean } from "https://cdn.spooky.click/ocean/1.3.0/ocean.js";
 import {
   RouteParams,
   RouterContext,
@@ -10,8 +12,7 @@ export type ImportMap = { imports: Record<string, unknown> };
 export type Navigate = (to: string, opts?: { replace?: boolean }) => void;
 
 export type StartOptions = {
-  importmap: string;
-  lang?: string;
+  importmap?: string;
   folder?: string;
   port?: number;
 };
@@ -55,17 +56,20 @@ export interface RenderConfigLitre {
 export const defaultBufferSize = 8 * 1024;
 export const defaultChunkSize = 8 * 1024;
 
-
 /* If we declare global variables and we need them typed this is the way */
-// declare global {
-//   var html: (
-//     strings: TemplateStringsArray,
-//     ...values: unknown[]
-//   ) => AsyncIterator<string, void, undefined>;
-//   interface Window {
-//     html: (
-//       strings: TemplateStringsArray,
-//       ...values: unknown[]
-//     ) => AsyncIterator<string, void, undefined>;
-//   }
-// }
+declare global {
+  var Ocean: {
+    html: (
+      strings: TemplateStringsArray,
+      ...values: unknown[]
+    ) => AsyncIterator<string, void, undefined>;
+  } & Ocean;
+  interface Window {
+    Ocean: {
+      html: (
+        strings: TemplateStringsArray,
+        ...values: unknown[]
+      ) => AsyncIterator<string, void, undefined>;
+    } & Ocean;
+  }
+}

@@ -24,14 +24,17 @@ export const render = async (
 
   const ocean = new Ocean({
     document,
-    hydration: 'full',
-    // deno-lint-ignore no-explicit-any
-  } as any);
+    hydration: "full",
+    polyfillURL: "",
+    hydrators: [],
+  });
+
+  /* Lets use ocean globally for SSR Templates */
+  self.Ocean = ocean as never;
 
   const app = (await import(join(root, `app.js?ts=${timestamp}`))) as {
     default: RenderConfigLitre;
   };
-
   const body = new ReadableStream({
     start(controller) {
       (async () => {

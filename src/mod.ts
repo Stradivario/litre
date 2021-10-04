@@ -27,10 +27,10 @@ const start = ({
   importmap: importMapSource,
   folder,
   port: serverPort,
-}: StartOptions) => {
+}: StartOptions = {}) => {
   const memory = new LRU<string>(500);
 
-  const importmap: ImportMap = JSON.parse(importMapSource);
+  const importmap: ImportMap = JSON.parse(importMapSource ?? '{}');
   const appFolder = folder || "app";
   const port = serverPort || parseInt(Deno.env.get("port") || "", 10) || 3000;
   const root = Deno.env.get("url") || `http://localhost:${port}`;
