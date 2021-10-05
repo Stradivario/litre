@@ -6,6 +6,7 @@
   "[typescript]": {
     "editor.formatOnSave": false
   },
+  "prettier.singleQuote": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true

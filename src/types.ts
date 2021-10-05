@@ -1,11 +1,11 @@
 /// <reference lib="dom" />
 // deno-lint-ignore-file no-explicit-any
 // deno-lint-ignore no-unused-vars
-import { Ocean } from "https://cdn.spooky.click/ocean/1.3.0/ocean.js";
+import { Ocean } from 'https://cdn.spooky.click/ocean/1.3.0/ocean.js';
 import {
   RouteParams,
   RouterContext,
-} from "https://deno.land/x/oak@v9.0.0/mod.ts";
+} from 'https://deno.land/x/oak@v9.0.0/mod.ts';
 
 export type ImportMap = { imports: Record<string, unknown> };
 
@@ -46,11 +46,7 @@ export type Cache = Map<unknown, unknown>;
 export interface RenderConfigLitre {
   page: (options: {
     context: RouterContext<RouteParams, Record<string, any>>;
-    html(
-      strings: TemplateStringsArray,
-      ...values: unknown[]
-    ): AsyncIterator<string, void, undefined>;
-  }) => AsyncIterable<string> & AsyncIterator<string, void, undefined>;
+  }) => AsyncIterable<string>;
 }
 
 export const defaultBufferSize = 8 * 1024;
@@ -62,14 +58,14 @@ declare global {
     html: (
       strings: TemplateStringsArray,
       ...values: unknown[]
-    ) => AsyncIterator<string, void, undefined>;
+    ) => AsyncIterable<string>;
   } & Ocean;
   interface Window {
     Ocean: {
       html: (
         strings: TemplateStringsArray,
         ...values: unknown[]
-      ) => AsyncIterator<string, void, undefined>;
+      ) => AsyncIterable<string>;
     } & Ocean;
   }
 }

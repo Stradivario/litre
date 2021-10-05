@@ -46,7 +46,7 @@ class AppRoot extends HTMLElement {
 customElements.define('app-root', AppRoot)
 
 export default {
-  page: ({ render }) => render`
+  page: () => Ocean.html`
     <!DOCTYPE html>
     <html lang="en">
       <head>
@@ -81,7 +81,7 @@ import { RenderConfigLitre } from 'https://raw.githubusercontent.com/Stradivario
 export class AppRoot extends LitElement {}
 
 export default {
-  page: (opts) => opts.html`
+  page: () => Ocean.html`
     <!DOCTYPE html>
     <html lang="en">
       <head>

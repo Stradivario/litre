@@ -1,15 +1,14 @@
-import { Buffer } from "https://deno.land/std@0.107.0/io/mod.ts";
-import { join } from "https://deno.land/std@0.107.0/path/mod.ts";
-import { Ocean } from "https://cdn.spooky.click/ocean/1.3.0/ocean.js";
+import { Buffer } from 'https://deno.land/std@0.107.0/io/mod.ts';
+import { join } from 'https://deno.land/std@0.107.0/path/mod.ts';
 
 import {
   defaultBufferSize,
   defaultChunkSize,
   RenderConfigLitre,
   RenderOptions,
-} from "./types.ts";
-import { pushBody } from "./helpers/push-body.ts";
-import { encodeStream } from "./helpers/encode-stream.ts";
+} from './types.ts';
+import { pushBody } from './helpers/push-body.ts';
+import { encodeStream } from './helpers/encode-stream.ts';
 
 export const render = async (
   {
@@ -22,16 +21,6 @@ export const render = async (
 ) => {
   chunkSize = chunkSize ?? defaultChunkSize;
 
-  const ocean = new Ocean({
-    document,
-    hydration: "full",
-    polyfillURL: "",
-    hydrators: [],
-  });
-
-  /* Lets use ocean globally for SSR Templates */
-  self.Ocean = ocean as never;
-
   const app = (await import(join(root, `app.js?ts=${timestamp}`))) as {
     default: RenderConfigLitre;
   };
@@ -40,7 +29,6 @@ export const render = async (
       (async () => {
         const webPageIterator = app.default.page({
           context,
-          html: ocean.html as never,
         });
         for await (const chunk of webPageIterator) {
           controller.enqueue(chunk);
@@ -73,8 +61,8 @@ export const render = async (
             await push(buffer.bytes({ copy: false }));
             await pushBody(bodyReader, controller, chunkSize as never);
           } catch (e) {
-            console.error("readable stream error", e);
-            await push("Error");
+            console.error('readable stream error', e);
+            await push('Error');
           }
           controller.close();
         })();

@@ -9,7 +9,7 @@ export const encodeStream = (readable: ReadableStream) =>
             const { value, done } = await reader.read();
             if (done) break;
 
-            if (typeof value === "string") {
+            if (typeof value === 'string') {
               controller.enqueue(encoder.encode(value));
             } else if (value instanceof Uint8Array) {
               controller.enqueue(value);

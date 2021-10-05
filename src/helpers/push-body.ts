@@ -1,4 +1,4 @@
-import { concat } from "https://deno.land/std@0.107.0/bytes/mod.ts";
+import { concat } from 'https://deno.land/std@0.107.0/bytes/mod.ts';
 
 export async function pushBody(
   reader: ReadableStreamDefaultReader,
