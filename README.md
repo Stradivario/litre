@@ -45,7 +45,7 @@ class AppRoot extends HTMLElement {
 
 customElements.define('app-root', AppRoot)
 
-export default {
+export default Litre({
   page: () => Ocean.html`
     <!DOCTYPE html>
     <html lang="en">
@@ -57,7 +57,7 @@ export default {
       </body>
     </html>
   `,
-};
+});
 ```
 
 
@@ -68,19 +68,17 @@ import {
   html,
   Component,
   LitElement,
-} from "https://cdn.esm.sh/v53/@rxdi/lit-html@0.7.127";
-
-import { RenderConfigLitre } from 'https://raw.githubusercontent.com/Stradivario/litre/master/src/types.ts';
+} from 'https://cdn.esm.sh/v53/@rxdi/lit-html@0.7.127';
 
 @Component({
-  selector: "app-root",
+  selector: 'app-root',
   template(this) {
     return html`Hello from SSR Webcomponents using Deno!`;
   },
 })
 export class AppRoot extends LitElement {}
 
-export default {
+export default Litre({
   page: () => Ocean.html`
     <!DOCTYPE html>
     <html lang="en">
@@ -93,5 +91,5 @@ export default {
       </body>
     </html>
   `,
-} as RenderConfigLitre;
+});
 ```

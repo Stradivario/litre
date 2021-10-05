@@ -43,23 +43,89 @@ export type RenderOptions = {
 
 export type Cache = Map<unknown, unknown>;
 
-export interface RenderConfigLitre {
+export interface Litre {
+  /**
+   * The main page that will be rendered
+   * accepts as a return type AsyncIterable
+   * it is intended to be used with `Ocean.html`
+   * ```
+   *  export default Litre({
+   *    page: () => Ocean.html`
+   *      <!DOCTYPE html>
+   *      <html lang="en">
+   *        <head>
+   *          <meta charset="UTF-8">
+   *          <title>My app</title>
+   *        </head>
+   *        <body>
+   *          <app-root></app-root>
+   *        </body>
+   *      </html>
+   *    `,
+   *  });
+   *```
+   */
   page: (options: {
     context: RouterContext<RouteParams, Record<string, any>>;
   }) => AsyncIterable<string>;
 }
+
+self.Litre = (c) => c;
 
 export const defaultBufferSize = 8 * 1024;
 export const defaultChunkSize = 8 * 1024;
 
 /* If we declare global variables and we need them typed this is the way */
 declare global {
+  /** 
+   * Rendering library for SSR called Ocean
+   * https://github.com/matthewp/ocean
+   * */ 
   var Ocean: {
+    /**
+     * Renders string literal as a AsyncIterable
+     * can be used like so 
+     * ```
+     * Ocean.html`
+     *   <!DOCTYPE html>
+     *   <html lang="en">
+     *     <head>
+     *       <meta charset="UTF-8">
+     *       <title>My app</title>
+     *     </head>
+     *     <body>
+     *       <app-root></app-root>
+     *     </body>
+     *   </html>
+     * `
+     * ```
+     */
     html: (
       strings: TemplateStringsArray,
       ...values: unknown[]
     ) => AsyncIterable<string>;
   } & Ocean;
+  /**
+ * Overload to type config in context,
+ * later on we can apply validation
+ * ```
+ * export default Litre({
+ *   page: () => Ocean.html`
+ *     <!DOCTYPE html>
+ *     <html lang="en">
+ *       <head>
+ *         <meta charset="UTF-8">
+ *         <title>My app</title>
+ *       </head>
+ *       <body>
+ *         <app-root></app-root>
+ *       </body>
+ *     </html>
+ *   `,
+ * });
+ * ```
+ * */
+  function Litre(c: Litre): Litre;
   interface Window {
     Ocean: {
       html: (
@@ -67,5 +133,6 @@ declare global {
         ...values: unknown[]
       ) => AsyncIterable<string>;
     } & Ocean;
+    Litre: (c: Litre) => Litre;
   }
 }

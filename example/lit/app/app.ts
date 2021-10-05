@@ -1,10 +1,10 @@
+/// <reference path="https://raw.githubusercontent.com/Stradivario/litre/master/src/types.ts" />
+
 import {
   html,
   Component,
   LitElement,
 } from 'https://cdn.esm.sh/v53/@rxdi/lit-html@0.7.127';
-
-import { RenderConfigLitre } from 'https://raw.githubusercontent.com/Stradivario/litre/master/src/types.ts';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +14,7 @@ import { RenderConfigLitre } from 'https://raw.githubusercontent.com/Stradivario
 })
 export class AppRoot extends LitElement {}
 
-export default {
+export default Litre({
   page: () => Ocean.html`
     <!DOCTYPE html>
     <html lang="en">
@@ -27,4 +27,4 @@ export default {
       </body>
     </html>
   `,
-} as RenderConfigLitre;
+});

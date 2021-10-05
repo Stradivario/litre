@@ -26,22 +26,28 @@ export const transform = async ({
   });
 
   let c = '';
+  console.log(code)
   const ast = parse(code, {
     syntax: 'typescript',
+    decorators: true,
     target: 'es2021',
     dynamicImport: true,
   });
+  
   ast.body.forEach((i) => {
     if (i.type == 'ImportDeclaration') {
       const { value, span } = i.source;
       c += code.substring(offset - length, span.start - length);
-      c += `"${
-        importmap?.imports?.[value] ||
-        value.replace(
-          /.js|.ts/gi,
-          () => `.js?ts=${!minify ? +new Date() : timestamp}`
-        )
-      }"`;
+      /* This causes more struggle to work as expected than the need of it */
+      if (minify) {
+        c += `"${
+          importmap?.imports?.[value] ||
+          value.replace(
+            /.js|.ts/gi,
+            () => `.js?ts=${!minify ? +new Date() : timestamp}`
+          )
+        }"`;
+      }
       offset = span.end;
     }
     if (i.type == 'VariableDeclaration') {
@@ -61,10 +67,10 @@ export const transform = async ({
                 }) => {
                   const { value, span } = b?.expression;
                   c += code.substring(offset - length, span.start - length);
-                  c += `"${value.replace(
-                    /.js|.ts/gi,
-                    () => `.js?ts=${!minify ? +new Date() : timestamp}`
-                  )}"`;
+                  // c += `"${value.replace(
+                  //   /.js|.ts/gi,
+                  //   () => `.js?ts=${!minify ? +new Date() : timestamp}`
+                  // )}"`;
                   offset = span.end;
                 }
               );

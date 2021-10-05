@@ -4,7 +4,7 @@ import { join } from 'https://deno.land/std@0.107.0/path/mod.ts';
 import {
   defaultBufferSize,
   defaultChunkSize,
-  RenderConfigLitre,
+  Litre,
   RenderOptions,
 } from './types.ts';
 import { pushBody } from './helpers/push-body.ts';
@@ -22,7 +22,7 @@ export const render = async (
   chunkSize = chunkSize ?? defaultChunkSize;
 
   const app = (await import(join(root, `app.js?ts=${timestamp}`))) as {
-    default: RenderConfigLitre;
+    default: Litre;
   };
   const body = new ReadableStream({
     start(controller) {
