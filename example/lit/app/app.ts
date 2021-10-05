@@ -1,10 +1,10 @@
-/// <reference path="https://raw.githubusercontent.com/Stradivario/litre/master/src/types.ts" />
-
 import {
-  html,
   Component,
+  html,
   LitElement,
 } from 'https://cdn.esm.sh/v53/@rxdi/lit-html@0.7.127';
+
+import 'https://cdn.esm.sh/v53/@rxdi/ui-kit/button';
 
 @Component({
   selector: 'app-root',
@@ -19,11 +19,12 @@ export default Litre({
     <!DOCTYPE html>
     <html lang="en">
       <head>
-        <meta charset="UTF-8">
+        <meta charset="UTF-8" />
         <title>My app</title>
       </head>
       <body>
         <app-root></app-root>
+        <rx-button>Test Button</rx-button>
       </body>
     </html>
   `,

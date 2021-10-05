@@ -29,12 +29,13 @@ const ocean = new Ocean({
 /* Lets use ocean globally for SSR Templates */
 self.Ocean = ocean as never;
 
-const app = new Application();
-const router = new Router();
 const serverStart = +new Date();
 const isDev = Deno.env.get('mode') === 'dev';
 
-const start = ({
+export const app = new Application();
+export const router = new Router();
+
+export const start = ({
   importmap: importMapSource,
   folder,
   port: serverPort,
@@ -131,9 +132,5 @@ const start = ({
 
   app.listen({ port });
 };
-
-export default start;
-
-export { app, router };
 
 export * from './types.ts';
