@@ -1,5 +1,8 @@
+// deno-lint-ignore-file no-explicit-any
 import { Buffer } from 'https://deno.land/std@0.107.0/io/mod.ts';
 import { join } from 'https://deno.land/std@0.107.0/path/mod.ts';
+import { parseHTML } from 'https://unpkg.com/linkedom@0.11.0/worker.js';
+import { Ocean } from 'https://cdn.spooky.click/ocean/1.3.0/ocean.js';
 
 import {
   defaultBufferSize,
@@ -21,6 +24,21 @@ export const render = async (
 ) => {
   chunkSize = chunkSize ?? defaultChunkSize;
 
+  const parsed = parseHTML(`<html></html>`);
+  (self as any).document = parsed?.document;
+  (self as any).customElements = parsed?.customElements;
+  (self as any).HTMLElement = parsed?.HTMLElement;
+
+  const ocean = new Ocean({
+    document,
+    hydration: 'full',
+    polyfillURL: '',
+    hydrators: [],
+  });
+  
+  /* Lets use ocean globally for SSR Templates */
+  self.Ocean = ocean as never;
+  
   const app = (await import(join(root, `app.js?ts=${timestamp}`))) as {
     default: Litre;
   };

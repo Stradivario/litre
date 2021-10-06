@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 import { existsSync } from 'https://deno.land/std@0.107.0/fs/mod.ts';
 import { join } from 'https://deno.land/std@0.107.0/path/mod.ts';
 import LRU from 'https://deno.land/x/lru@1.0.2/mod.ts';
@@ -7,27 +6,10 @@ import {
   Router,
   send,
 } from 'https://deno.land/x/oak@v9.0.0/mod.ts';
-import { Ocean } from 'https://cdn.spooky.click/ocean/1.3.0/ocean.js';
 
 import { render } from './render.ts';
 import { transform } from './helpers/transform.ts';
 import { ImportMap, StartOptions } from './types.ts';
-
-import './shims/shim.js?global';
-
-const root = (globalThis as any)[Symbol.for('dom-shim.defaultView')] as any;
-
-Object.assign(window, root);
-
-const ocean = new Ocean({
-  document,
-  hydration: 'full',
-  polyfillURL: '',
-  hydrators: [],
-});
-
-/* Lets use ocean globally for SSR Templates */
-self.Ocean = ocean as never;
 
 const serverStart = +new Date();
 const isDev = Deno.env.get('mode') === 'dev';

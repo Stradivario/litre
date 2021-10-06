@@ -77,6 +77,7 @@ export const defaultChunkSize = 8 * 1024;
 
 /* If we declare global variables and we need them typed this is the way */
 declare global {
+  var document: Document;
   /** 
    * Rendering library for SSR called Ocean
    * https://github.com/matthewp/ocean

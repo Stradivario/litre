@@ -1,8 +1,19 @@
-const Header = Ocean.html` <p>Header</p> `;
 
-const Body = Ocean.html` <p>Hello from SSR HTML using Deno!</p> `;
-
-const Footer = Ocean.html` <p>Footer</p> `;
+import { ButtonComponent } from 'https://cdn.esm.sh/v53/@rxdi/ui-kit@0.7.128/button';
+ButtonComponent;
+// customElements.define('rx-button', ButtonComponent)
+console.log(customElements.get('rx-button'))
+customElements.define('app-component', class extends HTMLElement {
+  constructor() {
+    super()
+    this.attachShadow({ mode: 'open' })
+  }
+  connectedCallback() {
+    const div = document.createElement("div");
+    div.innerHTML = `Hello from SSR Webcompdadaonents using Deno!`;
+    this.shadowRoot?.append(div);
+  }
+});
 
 export default {
   page: () => Ocean.html`
@@ -12,9 +23,6 @@ export default {
         <meta charset="UTF-8">
         <link rel="icon" type="image/x-icon" href="https://graphql-server.com/favicon.aa477cee.ico"/>
         <title>My app</title>
-          <script type="module">
-          import 'https://cdn.esm.sh/v53/@rxdi/ui-kit@0.7.128/button';
-          </script>
           <style>
           :root {
             --danger-bg-color: #f0506e;
@@ -26,9 +34,7 @@ export default {
           </style>
       </head>
       <body>
-        ${Header}
-        ${Body}
-        ${Footer}
+        <app-component></app-component>
         <rx-button palette="danger">TEST</rx-button>
       </body>
     </html>
