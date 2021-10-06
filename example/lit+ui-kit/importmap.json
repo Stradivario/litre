@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "@rxdi/lit-html": "https://cdn.esm.sh/v53/@rxdi/lit-html@0.7.127"
+  }
+}

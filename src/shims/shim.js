@@ -2,7 +2,7 @@ import {
   unshim,
   domShimSymbol,
 } from 'https://cdn.spooky.click/dom-shim/1.3.0/mod.js?global&props=customElements,document,window,Document,Element,HTMLElement,HTMLTemplateElement,Node,requestAnimationFrame,Text';
-// import { isLit, shimLit } from './shim-lit.js';
+// import { isLit, shimLit } from './lit/shim.js';
 
 const { document } = self[domShimSymbol];
 

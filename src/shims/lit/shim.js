@@ -1,4 +1,4 @@
-import { LitElementRenderer } from "https://cdn.spooky.click/lit-labs-ssr-bundle/1.0.2/mod.js";
+import { LitElementRenderer } from "./ssr.js";
 
 export function isLit(Ctr) {
   return !!Ctr._$litElement$;
