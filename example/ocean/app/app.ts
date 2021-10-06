@@ -13,7 +13,7 @@ export default {
         <link rel="icon" type="image/x-icon" href="https://graphql-server.com/favicon.aa477cee.ico"/>
         <title>My app</title>
           <script type="module">
-          import 'https://cdn.esm.sh/v53/@rxdi/ui-kit/button';
+          import 'https://cdn.esm.sh/v53/@rxdi/ui-kit@0.7.128/button';
           </script>
           <style>
           :root {
